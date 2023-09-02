@@ -36,7 +36,8 @@ def dis_word(fh, x):
         fh.write(")\n")
 
 base_file = sys.argv[-1]
-bin_file = base_file
+base_file = base_file if not base_file.endswith(".bin") else base_file.split(".")[0]
+bin_file = base_file + ".bin"
 
 if sys.argv[1] == "-p":
     with open(base_file, "r") as fh:
