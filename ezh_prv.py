@@ -47,14 +47,14 @@ COND = {
 INST = [
     ("E_GOSUB", 0x3,
     0x3, [
-        lambda x: x & ~0x3,
+        lambda x: "0x%08X" % (x & ~0x3),
     ]),
     ("E_NOP", OPMASK,
     0x12, [
     ]),
     ("E_INT_TRIGGER", OPMASK,
     0x14, [
-        lambda x: x >> 8,
+        lambda x: "0x%08X" % (x >> 8),
     ]),
 
 
@@ -62,7 +62,7 @@ INST = [
     ("E_COND_GOTO", OPMASK + (1 << 9) + (1 << 10),
     0x15 + (1 << 9), [
         lambda x: COND[(x >> 5) & 0xF],
-        lambda x: (x >> 9) & ~0x3,
+        lambda x: "0x%08X" % ((x >> 9) & ~0x3),
     ]),
     ("E_COND_GOTO_REG", OPMASK + (1 << 9) + (1 << 10),
     0x15, [
@@ -72,7 +72,7 @@ INST = [
     ("E_COND_GOTOL", OPMASK + (1 << 9) + (1 << 10),
     0x15 + (1 << 9) + (1 << 10), [
         lambda x: COND[(x >> 5) & 0xF],
-        lambda x: (x >> 9) & ~0x3,
+        lambda x: "0x%08X" % ((x >> 9) & ~0x3),
     ]),
     ("E_COND_GOTO_REGL", OPMASK + (1 << 9) + (1 << 10),
     0x15 + (1 << 10), [
@@ -82,53 +82,53 @@ INST = [
 
 
 
-    ("E_COND_MOV", OPMASK + (1 << 9) + (1 << 10) + (1 << 18) + (1 << 31),
+    ("E_COND_MOV", OPMASK + (1 << 9) + (1 << 18) + (1 << 31),
     0x0, [
         lambda x: COND[(x >> 5) & 0xF],
         lambda x: REG[(x >> 10) & 0xF],
         lambda x: REG[(x >> 14) & 0xF],
     ]),
-    ("E_COND_MOVS", OPMASK + (1 << 9) + (1 << 10) + (1 << 18) + (1 << 31),
+    ("E_COND_MOVS", OPMASK + (1 << 9) + (1 << 18) + (1 << 31),
     0x0 + (1 << 9), [
         lambda x: COND[(x >> 5) & 0xF],
         lambda x: REG[(x >> 10) & 0xF],
         lambda x: REG[(x >> 14) & 0xF],
     ]),
-    ("E_COND_MVN", OPMASK + (1 << 9) + (1 << 10) + (1 << 18) + (1 << 31),
+    ("E_COND_MVN", OPMASK + (1 << 9) + (1 << 18) + (1 << 31),
     0x0 + (1 << 31), [
         lambda x: COND[(x >> 5) & 0xF],
         lambda x: REG[(x >> 10) & 0xF],
         lambda x: REG[(x >> 14) & 0xF],
     ]),
-    ("E_COND_MVNS", OPMASK + (1 << 9) + (1 << 10) + (1 << 18) + (1 << 31),
+    ("E_COND_MVNS", OPMASK + (1 << 9) + (1 << 18) + (1 << 31),
     0x0 + (1 << 9) + (1 << 31), [
         lambda x: COND[(x >> 5) & 0xF],
         lambda x: REG[(x >> 10) & 0xF],
         lambda x: REG[(x >> 14) & 0xF],
     ]),
-    ("E_COND_LOAD_SIMM", OPMASK + (1 << 9) + (1 << 10) + (1 << 18) + (1 << 31),
+    ("E_COND_LOAD_SIMM", OPMASK + (1 << 9) + (1 << 18) + (1 << 31),
     0x0 + (1 << 18), [
         lambda x: COND[(x >> 5) & 0xF],
         lambda x: REG[(x >> 10) & 0xF],
         lambda x: (x >> 20) & 0x7FF,
         lambda x: (x >> 14) & 0xF + (x >> (19 - 4)) & 0x10,
     ]),
-    ("E_COND_LOAD_SIMMS", OPMASK + (1 << 9) + (1 << 10) + (1 << 18) + (1 << 31),
+    ("E_COND_LOAD_SIMMS", OPMASK + (1 << 9) + (1 << 18) + (1 << 31),
     0x0 + (1 << 9) + (1 << 18), [
         lambda x: COND[(x >> 5) & 0xF],
         lambda x: REG[(x >> 10) & 0xF],
         lambda x: (x >> 20) & 0x7FF,
         lambda x: (x >> 14) & 0xF + (x >> (19 - 4)) & 0x10,
     ]),
-    ("E_COND_LOAD_SIMMN", OPMASK + (1 << 9) + (1 << 10) + (1 << 18) + (1 << 31),
-    0x0 + (1 << 18), [
+    ("E_COND_LOAD_SIMMN", OPMASK + (1 << 9) + (1 << 18) + (1 << 31),
+    0x0 + (1 << 18) + (1 << 31), [
         lambda x: COND[(x >> 5) & 0xF],
         lambda x: REG[(x >> 10) & 0xF],
         lambda x: (x >> 20) & 0x7FF,
         lambda x: (x >> 14) & 0xF + (x >> (19 - 4)) & 0x10,
     ]),
-    ("E_COND_LOAD_SIMMNS", OPMASK + (1 << 9) + (1 << 10) + (1 << 18) + (1 << 31),
-    0x0 + (1 << 9) + (1 << 18), [
+    ("E_COND_LOAD_SIMMNS", OPMASK + (1 << 9) + (1 << 18) + (1 << 31),
+    0x0 + (1 << 9) + (1 << 18) + (1 << 31), [
         lambda x: COND[(x >> 5) & 0xF],
         lambda x: REG[(x >> 10) & 0xF],
         lambda x: (x >> 20) & 0x7FF,
