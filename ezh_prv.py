@@ -2,7 +2,10 @@
 # Copyright (c) 2023 Aedan Cullen <aedan@aedancullen.com>
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-# Unimplemented opcodes: 0x16 (ANDOR), 0x19 (shift by register)
+# Unimplemented opcodes:
+# 0x16 (ANDOR)
+# 0x19 (register-specified shift)
+# 0x1D (load/store with register-specified offset)
 
 def signed(value, bits):
     sign_bit = 1 << (bits - 1)
@@ -55,10 +58,10 @@ INST = [
     0x3, [
         lambda x: "0x%08X" % (x & 0xFFFFFFF8),
     ]),
-    ("E_NOP", OPMASK,
+    ("E_NOP", 0xFF,
     0x12, [
     ]),
-    ("E_INT_TRIGGER", OPMASK,
+    ("E_INT_TRIGGER", 0xFF,
     0x14, [
         lambda x: "0x%08X" % (x >> 8),
     ]),
@@ -395,6 +398,43 @@ INST = [
         lambda x: COND[(x >> 5) & 0xF],
         lambda x: REG[(x >> 14) & 0xF],
         lambda x: REG[(x >> 20) & 0xF],
+    ]),
+
+
+
+    # 9, 15, 18, 19 for 0x1C
+
+
+
+    ("E_MODIFY_GPO_BYTE", 0xFF,
+    0x1E, [
+        lambda x: "0x%02X" % ((x >> 8) & 0xFF),
+        lambda x: "0x%02X" % ((x >> 16) & 0xFF),
+        lambda x: "0x%02X" % ((x >> 24) & 0xFF),
+    ]),
+
+
+
+    ("E_HEART_RYTHM_IMM", 0xFF + (1 << 9),
+    0x32, [
+        lambda x: (x >> 16) & 0xFFFF,
+    ]),
+    ("E_HEART_RYTHM", 0xFF + (1 << 9),
+    0x32 + (1 << 9), [
+        lambda x: REG[(x >> 14) & 0xF],
+    ]),
+
+
+
+    ("E_SYNCH_ALL_TO_BEAT", 0xFF,
+    0x52, [
+        lambda x: x >> 31,
+    ]),
+
+
+
+    ("E_WAIT_FOR_BEAT", 0xFF,
+    0x72, [
     ]),
 ]
 
