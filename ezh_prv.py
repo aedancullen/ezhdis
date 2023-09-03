@@ -1,6 +1,8 @@
-# EZH ISA (aka IOH Arch. B, aka SmartDMA)
+# ISA for NXP's secret "EZH" microprocessor (aka IOH Arch. B, aka SmartDMA)
 # Copyright (c) 2023 Aedan Cullen <aedan@aedancullen.com>
 # SPDX-License-Identifier: GPL-3.0-or-later
+
+# Unimplemented opcodes: 0x16 (ANDOR), 0x19 (shift by register)
 
 def signed(value, bits):
     sign_bit = 1 << (bits - 1)
@@ -51,7 +53,7 @@ COND = {
 INST = [
     ("E_GOSUB", 0x3,
     0x3, [
-        lambda x: "0x%08X" % (x & ~0x3),
+        lambda x: "0x%08X" % (x & 0xFFFFFFF8),
     ]),
     ("E_NOP", OPMASK,
     0x12, [
@@ -115,28 +117,28 @@ INST = [
         lambda x: COND[(x >> 5) & 0xF],
         lambda x: REG[(x >> 10) & 0xF],
         lambda x: signed((x >> 20) & 0x7FF, 11),
-        lambda x: (x >> 14) & 0xF + (x >> (19 - 4)) & 0x10,
+        lambda x: ((x >> 14) & 0xF) + ((x >> (19 - 4)) & 0x10),
     ]),
     ("E_COND_LOAD_SIMMS", OPMASK + (1 << 9) + (1 << 18) + (1 << 31),
     0x0 + (1 << 9) + (1 << 18), [
         lambda x: COND[(x >> 5) & 0xF],
         lambda x: REG[(x >> 10) & 0xF],
         lambda x: signed((x >> 20) & 0x7FF, 11),
-        lambda x: (x >> 14) & 0xF + (x >> (19 - 4)) & 0x10,
+        lambda x: ((x >> 14) & 0xF) + ((x >> (19 - 4)) & 0x10),
     ]),
     ("E_COND_LOAD_SIMMN", OPMASK + (1 << 9) + (1 << 18) + (1 << 31),
     0x0 + (1 << 18) + (1 << 31), [
         lambda x: COND[(x >> 5) & 0xF],
         lambda x: REG[(x >> 10) & 0xF],
         lambda x: signed((x >> 20) & 0x7FF, 11),
-        lambda x: (x >> 14) & 0xF + (x >> (19 - 4)) & 0x10,
+        lambda x: ((x >> 14) & 0xF) + ((x >> (19 - 4)) & 0x10),
     ]),
     ("E_COND_LOAD_SIMMNS", OPMASK + (1 << 9) + (1 << 18) + (1 << 31),
     0x0 + (1 << 9) + (1 << 18) + (1 << 31), [
         lambda x: COND[(x >> 5) & 0xF],
         lambda x: REG[(x >> 10) & 0xF],
         lambda x: signed((x >> 20) & 0x7FF, 11),
-        lambda x: (x >> 14) & 0xF + (x >> (19 - 4)) & 0x10,
+        lambda x: ((x >> 14) & 0xF) + ((x >> (19 - 4)) & 0x10),
     ]),
 
 
@@ -265,7 +267,134 @@ INST = [
     0x5, [
         lambda x: COND[(x >> 5) & 0xF],
         lambda x: REG[(x >> 20) & 0xF],
-        lambda x: "0x%08X" % ((x >> 12) & 0x000FF000 + (x >> 8) & 0x00000FFC),
+        lambda x: "0x%08X" % (((x >> 12) & 0x000FF000) + ((x >> 8) & 0x00000FFC)),
+    ]),
+
+
+
+    ("E_COND_BTST", OPMASK + (1 << 9) + (1 << 18) + (3 << 29) + (1 << 31),
+    0x18 + (1 << 18) + (1 << 29) + (1 << 31), [
+        lambda x: COND[(x >> 5) & 0xF],
+        lambda x: REG[(x >> 10) & 0xF],
+        lambda x: REG[(x >> 14) & 0xF],
+        lambda x: REG[(x >> 20) & 0xF],
+    ]),
+    ("E_COND_BCLR", OPMASK + (1 << 9) + (1 << 18) + (3 << 29) + (1 << 31),
+    0x18 + (1 << 18) + (1 << 29), [
+        lambda x: COND[(x >> 5) & 0xF],
+        lambda x: REG[(x >> 10) & 0xF],
+        lambda x: REG[(x >> 14) & 0xF],
+        lambda x: REG[(x >> 20) & 0xF],
+    ]),
+    ("E_COND_BSET", OPMASK + (1 << 9) + (1 << 18) + (3 << 29) + (1 << 31),
+    0x18 + (1 << 18) + (2 << 29) + (1 << 31), [
+        lambda x: COND[(x >> 5) & 0xF],
+        lambda x: REG[(x >> 10) & 0xF],
+        lambda x: REG[(x >> 14) & 0xF],
+        lambda x: REG[(x >> 20) & 0xF],
+    ]),
+    ("E_COND_BTOG", OPMASK + (1 << 9) + (1 << 18) + (3 << 29) + (1 << 31),
+    0x18 + (1 << 18) + (3 << 29) + (1 << 31), [
+        lambda x: COND[(x >> 5) & 0xF],
+        lambda x: REG[(x >> 10) & 0xF],
+        lambda x: REG[(x >> 14) & 0xF],
+        lambda x: REG[(x >> 20) & 0xF],
+    ]),
+    ("E_COND_BTSTS", OPMASK + (1 << 9) + (1 << 18) + (3 << 29) + (1 << 31),
+    0x18 + (1 << 9) + (1 << 18) + (1 << 29) + (1 << 31), [
+        lambda x: COND[(x >> 5) & 0xF],
+        lambda x: REG[(x >> 10) & 0xF],
+        lambda x: REG[(x >> 14) & 0xF],
+        lambda x: REG[(x >> 20) & 0xF],
+    ]),
+    ("E_COND_BCLRS", OPMASK + (1 << 9) + (1 << 18) + (3 << 29) + (1 << 31),
+    0x18 + (1 << 9) + (1 << 18) + (1 << 29), [
+        lambda x: COND[(x >> 5) & 0xF],
+        lambda x: REG[(x >> 10) & 0xF],
+        lambda x: REG[(x >> 14) & 0xF],
+        lambda x: REG[(x >> 20) & 0xF],
+    ]),
+    ("E_COND_BSETS", OPMASK + (1 << 9) + (1 << 18) + (3 << 29) + (1 << 31),
+    0x18 + (1 << 9) + (1 << 18) + (2 << 29) + (1 << 31), [
+        lambda x: COND[(x >> 5) & 0xF],
+        lambda x: REG[(x >> 10) & 0xF],
+        lambda x: REG[(x >> 14) & 0xF],
+        lambda x: REG[(x >> 20) & 0xF],
+    ]),
+    ("E_COND_BTOGS", OPMASK + (1 << 9) + (1 << 18) + (3 << 29) + (1 << 31),
+    0x18 + (1 << 9) + (1 << 18) + (3 << 29) + (1 << 31), [
+        lambda x: COND[(x >> 5) & 0xF],
+        lambda x: REG[(x >> 10) & 0xF],
+        lambda x: REG[(x >> 14) & 0xF],
+        lambda x: REG[(x >> 20) & 0xF],
+    ]),
+
+
+
+    ("E_COND_BTST_IMM", OPMASK + (1 << 9) + (1 << 18) + (3 << 29) + (1 << 31),
+    0x18 + (1 << 29) + (1 << 31), [
+        lambda x: COND[(x >> 5) & 0xF],
+        lambda x: REG[(x >> 10) & 0xF],
+        lambda x: REG[(x >> 14) & 0xF],
+        lambda x: (x >> 24) & 0x1F,
+    ]),
+    ("E_COND_BCLR_IMM", OPMASK + (1 << 9) + (1 << 18) + (3 << 29) + (1 << 31),
+    0x18 + (1 << 29), [
+        lambda x: COND[(x >> 5) & 0xF],
+        lambda x: REG[(x >> 10) & 0xF],
+        lambda x: REG[(x >> 14) & 0xF],
+        lambda x: (x >> 24) & 0x1F,
+    ]),
+    ("E_COND_BSET_IMM", OPMASK + (1 << 9) + (1 << 18) + (3 << 29) + (1 << 31),
+    0x18 + (2 << 29) + (1 << 31), [
+        lambda x: COND[(x >> 5) & 0xF],
+        lambda x: REG[(x >> 10) & 0xF],
+        lambda x: REG[(x >> 14) & 0xF],
+        lambda x: (x >> 24) & 0x1F,
+    ]),
+    ("E_COND_BTOG_IMM", OPMASK + (1 << 9) + (1 << 18) + (3 << 29) + (1 << 31),
+    0x18 + (3 << 29) + (1 << 31), [
+        lambda x: COND[(x >> 5) & 0xF],
+        lambda x: REG[(x >> 10) & 0xF],
+        lambda x: REG[(x >> 14) & 0xF],
+        lambda x: (x >> 24) & 0x1F,
+    ]),
+    ("E_COND_BTST_IMMS", OPMASK + (1 << 9) + (1 << 18) + (3 << 29) + (1 << 31),
+    0x18 + (1 << 9) + (1 << 29) + (1 << 31), [
+        lambda x: COND[(x >> 5) & 0xF],
+        lambda x: REG[(x >> 10) & 0xF],
+        lambda x: REG[(x >> 14) & 0xF],
+        lambda x: (x >> 24) & 0x1F,
+    ]),
+    ("E_COND_BCLR_IMMS", OPMASK + (1 << 9) + (1 << 18) + (3 << 29) + (1 << 31),
+    0x18 + (1 << 9) + (1 << 29), [
+        lambda x: COND[(x >> 5) & 0xF],
+        lambda x: REG[(x >> 10) & 0xF],
+        lambda x: REG[(x >> 14) & 0xF],
+        lambda x: (x >> 24) & 0x1F,
+    ]),
+    ("E_COND_BSET_IMMS", OPMASK + (1 << 9) + (1 << 18) + (3 << 29) + (1 << 31),
+    0x18 + (1 << 9) + (2 << 29) + (1 << 31), [
+        lambda x: COND[(x >> 5) & 0xF],
+        lambda x: REG[(x >> 10) & 0xF],
+        lambda x: REG[(x >> 14) & 0xF],
+        lambda x: (x >> 24) & 0x1F,
+    ]),
+    ("E_COND_BTOG_IMMS", OPMASK + (1 << 9) + (1 << 18) + (3 << 29) + (1 << 31),
+    0x18 + (1 << 9) + (3 << 29) + (1 << 31), [
+        lambda x: COND[(x >> 5) & 0xF],
+        lambda x: REG[(x >> 10) & 0xF],
+        lambda x: REG[(x >> 14) & 0xF],
+        lambda x: (x >> 24) & 0x1F,
+    ]),
+
+
+
+    ("E_COND_TIGHT_LOOP", OPMASK,
+    0x1A, [
+        lambda x: COND[(x >> 5) & 0xF],
+        lambda x: REG[(x >> 14) & 0xF],
+        lambda x: REG[(x >> 20) & 0xF],
     ]),
 ]
 
@@ -564,3 +693,146 @@ INST.extend(build_tla1("SBC", 0xA))
 INST.extend(build_tla1("OR", 0xC))
 INST.extend(build_tla1("AND", 0xD))
 INST.extend(build_tla1("XOR", 0XE))
+
+
+
+def build_tla2(tla, op, field18, field19):
+    return [
+        (f"E_COND_{tla}", OPMASK + (1 << 9) + (1 << 18) + (1 << 19) + (7 << 29),
+        op + (field18 << 18) + (field19 << 19), [
+            lambda x: COND[(x >> 5) & 0xF],
+            lambda x: REG[(x >> 10) & 0xF],
+            lambda x: REG[(x >> 20) & 0xF],
+            lambda x: (x >> 24) & 0x1F,
+        ]),
+        (f"E_COND_{tla}S", OPMASK + (1 << 9) + (1 << 18) + (1 << 19) + (7 << 29),
+        op + (1 << 9) + (field18 << 18) + (field19 << 19), [
+            lambda x: COND[(x >> 5) & 0xF],
+            lambda x: REG[(x >> 10) & 0xF],
+            lambda x: REG[(x >> 20) & 0xF],
+            lambda x: (x >> 24) & 0x1F,
+        ]),
+        (f"E_COND_{tla}_AND", OPMASK + (1 << 9) + (1 << 18) + (1 << 19) + (7 << 29),
+        op + (field18 << 18) + (field19 << 19) + (1 << 29), [
+            lambda x: COND[(x >> 5) & 0xF],
+            lambda x: REG[(x >> 10) & 0xF],
+            lambda x: REG[(x >> 14) & 0xF],
+            lambda x: REG[(x >> 20) & 0xF],
+            lambda x: (x >> 24) & 0x1F,
+        ]),
+        (f"E_COND_{tla}_ANDS", OPMASK + (1 << 9) + (1 << 18) + (1 << 19) + (7 << 29),
+        op + (1 << 9) + (field18 << 18) + (field19 << 19) + (1 << 29), [
+            lambda x: COND[(x >> 5) & 0xF],
+            lambda x: REG[(x >> 10) & 0xF],
+            lambda x: REG[(x >> 14) & 0xF],
+            lambda x: REG[(x >> 20) & 0xF],
+            lambda x: (x >> 24) & 0x1F,
+        ]),
+        (f"E_COND_{tla}_OR", OPMASK + (1 << 9) + (1 << 18) + (1 << 19) + (7 << 29),
+        op + (field18 << 18) + (field19 << 19) + (2 << 29), [
+            lambda x: COND[(x >> 5) & 0xF],
+            lambda x: REG[(x >> 10) & 0xF],
+            lambda x: REG[(x >> 14) & 0xF],
+            lambda x: REG[(x >> 20) & 0xF],
+            lambda x: (x >> 24) & 0x1F,
+        ]),
+        (f"E_COND_{tla}_ORS", OPMASK + (1 << 9) + (1 << 18) + (1 << 19) + (7 << 29),
+        op + (1 << 9) + (field18 << 18) + (field19 << 19) + (2 << 29), [
+            lambda x: COND[(x >> 5) & 0xF],
+            lambda x: REG[(x >> 10) & 0xF],
+            lambda x: REG[(x >> 14) & 0xF],
+            lambda x: REG[(x >> 20) & 0xF],
+            lambda x: (x >> 24) & 0x1F,
+        ]),
+        (f"E_COND_{tla}_XOR", OPMASK + (1 << 9) + (1 << 18) + (1 << 19) + (7 << 29),
+        op + (field18 << 18) + (field19 << 19) + (3 << 29), [
+            lambda x: COND[(x >> 5) & 0xF],
+            lambda x: REG[(x >> 10) & 0xF],
+            lambda x: REG[(x >> 14) & 0xF],
+            lambda x: REG[(x >> 20) & 0xF],
+            lambda x: (x >> 24) & 0x1F,
+        ]),
+        (f"E_COND_{tla}_XORS", OPMASK + (1 << 9) + (1 << 18) + (1 << 19) + (7 << 29),
+        op + (1 << 9) + (field18 << 18) + (field19 << 19) + (3 << 29), [
+            lambda x: COND[(x >> 5) & 0xF],
+            lambda x: REG[(x >> 10) & 0xF],
+            lambda x: REG[(x >> 14) & 0xF],
+            lambda x: REG[(x >> 20) & 0xF],
+            lambda x: (x >> 24) & 0x1F,
+        ]),
+        (f"E_COND_{tla}_ADD", OPMASK + (1 << 9) + (1 << 18) + (1 << 19) + (7 << 29),
+        op + (field18 << 18) + (field19 << 19) + (4 << 29), [
+            lambda x: COND[(x >> 5) & 0xF],
+            lambda x: REG[(x >> 10) & 0xF],
+            lambda x: REG[(x >> 14) & 0xF],
+            lambda x: REG[(x >> 20) & 0xF],
+            lambda x: (x >> 24) & 0x1F,
+        ]),
+        (f"E_COND_{tla}_ADDS", OPMASK + (1 << 9) + (1 << 18) + (1 << 19) + (7 << 29),
+        op + (1 << 9) + (field18 << 18) + (field19 << 19) + (4 << 29), [
+            lambda x: COND[(x >> 5) & 0xF],
+            lambda x: REG[(x >> 10) & 0xF],
+            lambda x: REG[(x >> 14) & 0xF],
+            lambda x: REG[(x >> 20) & 0xF],
+            lambda x: (x >> 24) & 0x1F,
+        ]),
+        (f"E_COND_{tla}_SUB", OPMASK + (1 << 9) + (1 << 18) + (1 << 19) + (7 << 29),
+        op + (field18 << 18) + (field19 << 19) + (5 << 29), [
+            lambda x: COND[(x >> 5) & 0xF],
+            lambda x: REG[(x >> 10) & 0xF],
+            lambda x: REG[(x >> 14) & 0xF],
+            lambda x: REG[(x >> 20) & 0xF],
+            lambda x: (x >> 24) & 0x1F,
+        ]),
+        (f"E_COND_{tla}_SUBS", OPMASK + (1 << 9) + (1 << 18) + (1 << 19) + (7 << 29),
+        op + (1 << 9) + (field18 << 18) + (field19 << 19) + (5 << 29), [
+            lambda x: COND[(x >> 5) & 0xF],
+            lambda x: REG[(x >> 10) & 0xF],
+            lambda x: REG[(x >> 14) & 0xF],
+            lambda x: REG[(x >> 20) & 0xF],
+            lambda x: (x >> 24) & 0x1F,
+        ]),
+        (f"E_COND_{tla}_ADC", OPMASK + (1 << 9) + (1 << 18) + (1 << 19) + (7 << 29),
+        op + (field18 << 18) + (field19 << 19) + (6 << 29), [
+            lambda x: COND[(x >> 5) & 0xF],
+            lambda x: REG[(x >> 10) & 0xF],
+            lambda x: REG[(x >> 14) & 0xF],
+            lambda x: REG[(x >> 20) & 0xF],
+            lambda x: (x >> 24) & 0x1F,
+        ]),
+        (f"E_COND_{tla}_ADCS", OPMASK + (1 << 9) + (1 << 18) + (1 << 19) + (7 << 29),
+        op + (1 << 9) + (field18 << 18) + (field19 << 19) + (6 << 29), [
+            lambda x: COND[(x >> 5) & 0xF],
+            lambda x: REG[(x >> 10) & 0xF],
+            lambda x: REG[(x >> 14) & 0xF],
+            lambda x: REG[(x >> 20) & 0xF],
+            lambda x: (x >> 24) & 0x1F,
+        ]),
+        (f"E_COND_{tla}_SBC", OPMASK + (1 << 9) + (1 << 18) + (1 << 19) + (7 << 29),
+        op + (field18 << 18) + (field19 << 19) + (7 << 29), [
+            lambda x: COND[(x >> 5) & 0xF],
+            lambda x: REG[(x >> 10) & 0xF],
+            lambda x: REG[(x >> 14) & 0xF],
+            lambda x: REG[(x >> 20) & 0xF],
+            lambda x: (x >> 24) & 0x1F,
+        ]),
+        (f"E_COND_{tla}_SBCS", OPMASK + (1 << 9) + (1 << 18) + (1 << 19) + (7 << 29),
+        op + (1 << 9) + (field18 << 18) + (field19 << 19) + (7 << 29), [
+            lambda x: COND[(x >> 5) & 0xF],
+            lambda x: REG[(x >> 10) & 0xF],
+            lambda x: REG[(x >> 14) & 0xF],
+            lambda x: REG[(x >> 20) & 0xF],
+            lambda x: (x >> 24) & 0x1F,
+        ]),
+    ]
+
+
+
+INST.extend(build_tla2("LSL", 0x10, 0, 0))
+INST.extend(build_tla2("LSR", 0x10, 0, 1))
+INST.extend(build_tla2("ROR", 0x10, 1, 1))
+INST.extend(build_tla2("ASR", 0x10, 1, 0))
+INST.extend(build_tla2("FEND_ASR", 0x11, 0, 1))
+INST.extend(build_tla2("FBIT_ASR", 0x11, 1, 1))
+INST.extend(build_tla2("FEND_LSR", 0x11, 0, 0))
+INST.extend(build_tla2("FBIT_LSR", 0x11, 1, 0))
