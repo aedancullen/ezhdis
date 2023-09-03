@@ -11,6 +11,25 @@ def signed(value, bits):
     sign_bit = 1 << (bits - 1)
     return (value & (sign_bit - 1)) - (value & sign_bit)
 
+def addr(x):
+    if ENABLE_SMARTDMA_REGS:
+        return SMARTDMA_REGS[x] if x in SMARTDMA_REGS else "0x%08X" % x
+    return "0x%08X" % x
+
+SMARTDMA_REGS = {
+    0x00027020: "BOOT",
+    0x00027024: "CTRL",
+    0x00027028: "PC",
+    0x0002702C: "SP",
+    0x00027030: "BREAK_ADDR",
+    0x00027034: "BREAK_VECT",
+    0x00027038: "EMER_VECT",
+    0x0002703C: "EMER_SEL",
+    0x00027040: "ARM2SMARTDMA",
+    0x00027044: "SMARTDMA2ARM",
+    0x00027048: "PENDTRAP",
+}
+
 OPMASK = 0x1F
 
 REG = {
@@ -56,7 +75,7 @@ COND = {
 INST = [
     ("E_GOSUB", 0x3,
     0x3, [
-        lambda x: "0x%08X" % (x & 0xFFFFFFF8),
+        lambda x: addr(x & 0xFFFFFFF8),
     ]),
     ("E_NOP", 0xFF,
     0x12, [
@@ -71,7 +90,7 @@ INST = [
     ("E_COND_GOTO", OPMASK + (1 << 9) + (1 << 10),
     0x15 + (1 << 9), [
         lambda x: COND[(x >> 5) & 0xF],
-        lambda x: "0x%08X" % ((x >> 9) & ~0x3),
+        lambda x: addr((x >> 9) & ~0x3),
     ]),
     ("E_COND_GOTO_REG", OPMASK + (1 << 9) + (1 << 10),
     0x15, [
@@ -81,7 +100,7 @@ INST = [
     ("E_COND_GOTOL", OPMASK + (1 << 9) + (1 << 10),
     0x15 + (1 << 9) + (1 << 10), [
         lambda x: COND[(x >> 5) & 0xF],
-        lambda x: "0x%08X" % ((x >> 9) & ~0x3),
+        lambda x: addr((x >> 9) & ~0x3),
     ]),
     ("E_COND_GOTO_REGL", OPMASK + (1 << 9) + (1 << 10),
     0x15 + (1 << 10), [
@@ -261,7 +280,7 @@ INST = [
     0x4, [
         lambda x: COND[(x >> 5) & 0xF],
         lambda x: REG[(x >> 10) & 0xF],
-        lambda x: "0x%08X" % ((x >> 12) & 0x000FFFFC),
+        lambda x: addr((x >> 12) & 0x000FFFFC),
     ]),
 
 
@@ -270,7 +289,7 @@ INST = [
     0x5, [
         lambda x: COND[(x >> 5) & 0xF],
         lambda x: REG[(x >> 20) & 0xF],
-        lambda x: "0x%08X" % (((x >> 12) & 0x000FF000) + ((x >> 8) & 0x00000FFC)),
+        lambda x: addr(((x >> 12) & 0x000FF000) + ((x >> 8) & 0x00000FFC)),
     ]),
 
 

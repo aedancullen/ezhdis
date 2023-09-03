@@ -26,7 +26,7 @@
 E_NOP                                   // 0x00100054
 E_COND_LOAD_SIMM(EU, CFS, 0, 0)         // 0x00100058
 E_COND_LOAD_SIMM(EU, CFM, 257, 0)       // 0x0010005C
-E_COND_PER_READ(EU, R6, 0x00027040)     // 0x00100060
+E_COND_PER_READ(EU, R6, ARM2SMARTDMA)   // 0x00100060
 E_COND_LDR(EU, R0, R6, 0)               // 0x00100064
 E_COND_LDR(EU, R1, R6, 1)               // 0x00100068
 E_COND_LDR(EU, SP, R6, 2)               // 0x0010006C
@@ -82,7 +82,7 @@ E_COND_GOTO(EU, 0x00100114)             // 0x00100130
 E_NOP                                   // 0x00100134
 E_COND_LOAD_SIMM(EU, CFS, 0, 0)         // 0x00100138
 E_COND_LOAD_SIMM(EU, CFM, 257, 0)       // 0x0010013C
-E_COND_PER_READ(EU, R6, 0x00027040)     // 0x00100140
+E_COND_PER_READ(EU, R6, ARM2SMARTDMA)   // 0x00100140
 E_COND_LDR(EU, R0, R6, 0)               // 0x00100144
 E_COND_LDR(EU, R1, R6, 1)               // 0x00100148
 E_COND_LDR(EU, SP, R6, 2)               // 0x0010014C
@@ -131,7 +131,7 @@ E_COND_GOTO(EU, 0x001001D8)             // 0x001001F4
 E_NOP                                   // 0x001001F8
 E_COND_LOAD_SIMM(EU, CFS, 0, 0)         // 0x001001FC
 E_COND_LOAD_SIMM(EU, CFM, 257, 0)       // 0x00100200
-E_COND_PER_READ(EU, R6, 0x00027040)     // 0x00100204
+E_COND_PER_READ(EU, R6, ARM2SMARTDMA)   // 0x00100204
 E_COND_LDR(EU, R0, R6, 0)               // 0x00100208
 E_COND_LDR(EU, R1, R6, 1)               // 0x0010020C
 E_COND_LDR(EU, SP, R6, 2)               // 0x00100210
@@ -180,7 +180,7 @@ E_COND_GOTO(EU, 0x0010029C)             // 0x001002B8
 E_NOP                                   // 0x001002BC
 E_COND_LOAD_SIMM(EU, CFS, 0, 0)         // 0x001002C0
 E_COND_LOAD_SIMM(EU, CFM, 257, 0)       // 0x001002C4
-E_COND_PER_READ(EU, R6, 0x00027040)     // 0x001002C8
+E_COND_PER_READ(EU, R6, ARM2SMARTDMA)   // 0x001002C8
 E_COND_LDR(EU, R0, R6, 0)               // 0x001002CC
 E_COND_LDR(EU, R1, R6, 1)               // 0x001002D0
 E_COND_LDR(EU, SP, R6, 2)               // 0x001002D4
@@ -218,7 +218,7 @@ E_COND_XOR_LSL(EU, CFM, R0, R2, 0)      // 0x00100350
 E_COND_HOLD(EU)                         // 0x00100354
 E_COND_GOTO(EU, 0x0010033C)             // 0x00100358
 E_NOP                                   // 0x0010035C
-E_COND_PER_READ(EU, R6, 0x00027040)     // 0x00100360
+E_COND_PER_READ(EU, R6, ARM2SMARTDMA)   // 0x00100360
 E_COND_LSR(EU, R6, R6, 2)               // 0x00100364
 E_COND_LSL(EU, R6, R6, 2)               // 0x00100368
 E_COND_LDR(EU, R0, R6, 0)               // 0x0010036C
@@ -552,7 +552,7 @@ E_COND_GOTO(EU, 0x0010086C)             // 0x00100888
 E_NOP                                   // 0x0010088C
 E_COND_LOAD_SIMM(EU, CFS, 0, 0)         // 0x00100890
 E_COND_LOAD_SIMM(EU, CFM, 257, 0)       // 0x00100894
-E_COND_PER_READ(EU, R6, 0x00027040)     // 0x00100898
+E_COND_PER_READ(EU, R6, ARM2SMARTDMA)   // 0x00100898
 E_COND_LSR(EU, R6, R6, 2)               // 0x0010089C
 E_COND_LSL(EU, R6, R6, 2)               // 0x001008A0
 E_COND_LDR(EU, R0, R6, 0)               // 0x001008A4
@@ -892,7 +892,7 @@ E_COND_GOTO(EU, 0x00100DBC)             // 0x00100DD8
 E_NOP                                   // 0x00100DDC
 E_COND_LOAD_SIMM(EU, CFS, 0, 0)         // 0x00100DE0
 E_COND_LOAD_SIMM(EU, CFM, 257, 0)       // 0x00100DE4
-E_COND_PER_READ(EU, R6, 0x00027040)     // 0x00100DE8
+E_COND_PER_READ(EU, R6, ARM2SMARTDMA)   // 0x00100DE8
 E_COND_LDR(EU, R0, R6, 0)               // 0x00100DEC
 E_COND_LDR(EU, R1, R6, 1)               // 0x00100DF0
 E_COND_LDR(EU, SP, R6, 2)               // 0x00100DF4
@@ -1025,7 +1025,7 @@ E_COND_GOTO(EU, 0x00100FD0)             // 0x00100FEC
 E_NOP                                   // 0x00100FF0
 E_COND_LOAD_SIMM(EU, CFS, 0, 0)         // 0x00100FF4
 E_COND_LOAD_SIMM(EU, CFM, 257, 0)       // 0x00100FF8
-E_COND_PER_READ(EU, R6, 0x00027040)     // 0x00100FFC
+E_COND_PER_READ(EU, R6, ARM2SMARTDMA)   // 0x00100FFC
 E_COND_LDR(EU, R0, R6, 0)               // 0x00101000
 E_COND_LDR(EU, R1, R6, 1)               // 0x00101004
 E_COND_LDR(EU, SP, R6, 2)               // 0x00101008
@@ -1182,7 +1182,7 @@ E_COND_GOTO(EU, 0x00101244)             // 0x00101260
 E_NOP                                   // 0x00101264
 E_COND_LOAD_SIMM(EU, CFS, 0, 0)         // 0x00101268
 E_COND_LOAD_SIMM(EU, CFM, 257, 0)       // 0x0010126C
-E_COND_PER_READ(EU, R6, 0x00027040)     // 0x00101270
+E_COND_PER_READ(EU, R6, ARM2SMARTDMA)   // 0x00101270
 E_COND_LDR(EU, R0, R6, 0)               // 0x00101274
 E_COND_LDR(EU, R1, R6, 1)               // 0x00101278
 E_COND_LDR(EU, SP, R6, 2)               // 0x0010127C
@@ -1340,7 +1340,7 @@ E_COND_GOTO(EU, 0x001014BC)             // 0x001014D8
 E_NOP                                   // 0x001014DC
 E_COND_LOAD_SIMM(EU, CFS, 0, 0)         // 0x001014E0
 E_COND_LOAD_SIMM(EU, CFM, 257, 0)       // 0x001014E4
-E_COND_PER_READ(EU, R6, 0x00027040)     // 0x001014E8
+E_COND_PER_READ(EU, R6, ARM2SMARTDMA)   // 0x001014E8
 E_COND_LDR(EU, R0, R6, 0)               // 0x001014EC
 E_COND_LDR(EU, R1, R6, 1)               // 0x001014F0
 E_COND_LDR(EU, SP, R6, 2)               // 0x001014F4
@@ -1431,7 +1431,7 @@ E_COND_GOTO(EU, 0x00101628)             // 0x00101644
 E_NOP                                   // 0x00101648
 E_COND_LOAD_SIMM(EU, CFS, 0, 0)         // 0x0010164C
 E_COND_LOAD_SIMM(EU, CFM, 257, 0)       // 0x00101650
-E_COND_PER_READ(EU, R6, 0x00027040)     // 0x00101654
+E_COND_PER_READ(EU, R6, ARM2SMARTDMA)   // 0x00101654
 E_COND_LDR(EU, R0, R6, 0)               // 0x00101658
 E_COND_LDR(EU, R1, R6, 1)               // 0x0010165C
 E_COND_LDR(EU, SP, R6, 2)               // 0x00101660
@@ -1608,7 +1608,7 @@ E_COND_GOTO(EU, 0x001018EC)             // 0x00101908
 E_NOP                                   // 0x0010190C
 E_COND_LOAD_SIMM(EU, CFS, 0, 0)         // 0x00101910
 E_COND_LOAD_SIMM(EU, CFM, 257, 0)       // 0x00101914
-E_COND_PER_READ(EU, R6, 0x00027040)     // 0x00101918
+E_COND_PER_READ(EU, R6, ARM2SMARTDMA)   // 0x00101918
 E_COND_LDR(EU, R0, R6, 0)               // 0x0010191C
 E_COND_LDR(EU, R1, R6, 1)               // 0x00101920
 E_COND_LDR(EU, SP, R6, 2)               // 0x00101924
@@ -1787,7 +1787,7 @@ E_COND_GOTO(EU, 0x00101BB8)             // 0x00101BD4
 E_NOP                                   // 0x00101BD8
 E_COND_LOAD_SIMM(EU, CFS, 0, 0)         // 0x00101BDC
 E_COND_LOAD_SIMM(EU, CFM, 257, 0)       // 0x00101BE0
-E_COND_PER_READ(EU, R6, 0x00027040)     // 0x00101BE4
+E_COND_PER_READ(EU, R6, ARM2SMARTDMA)   // 0x00101BE4
 E_COND_LDR(EU, R0, R6, 0)               // 0x00101BE8
 E_COND_LDR(EU, R1, R6, 1)               // 0x00101BEC
 E_COND_LDR(EU, SP, R6, 2)               // 0x00101BF0
@@ -1879,7 +1879,7 @@ E_COND_GOTO(EU, 0x00101D28)             // 0x00101D44
 E_NOP                                   // 0x00101D48
 E_COND_LOAD_SIMM(EU, CFS, 0, 0)         // 0x00101D4C
 E_COND_LOAD_SIMM(EU, CFM, 257, 0)       // 0x00101D50
-E_COND_PER_READ(EU, R6, 0x00027040)     // 0x00101D54
+E_COND_PER_READ(EU, R6, ARM2SMARTDMA)   // 0x00101D54
 E_COND_LDR(EU, R0, R6, 0)               // 0x00101D58
 E_COND_LDR(EU, R1, R6, 1)               // 0x00101D5C
 E_COND_LDR(EU, SP, R6, 2)               // 0x00101D60
@@ -2059,7 +2059,7 @@ E_COND_GOTO(EU, 0x00101FF8)             // 0x00102014
 E_NOP                                   // 0x00102018
 E_COND_LOAD_SIMM(EU, CFS, 0, 0)         // 0x0010201C
 E_COND_LOAD_SIMM(EU, CFM, 257, 0)       // 0x00102020
-E_COND_PER_READ(EU, R6, 0x00027040)     // 0x00102024
+E_COND_PER_READ(EU, R6, ARM2SMARTDMA)   // 0x00102024
 E_COND_LDR(EU, R0, R6, 0)               // 0x00102028
 E_COND_LDR(EU, R1, R6, 1)               // 0x0010202C
 E_COND_LDR(EU, SP, R6, 2)               // 0x00102030
@@ -2240,7 +2240,7 @@ E_COND_GOTO(EU, 0x001022CC)             // 0x001022E8
 E_NOP                                   // 0x001022EC
 E_COND_LOAD_SIMM(EU, CFS, 0, 0)         // 0x001022F0
 E_COND_LOAD_SIMM(EU, CFM, 257, 0)       // 0x001022F4
-E_COND_PER_READ(EU, R6, 0x00027040)     // 0x001022F8
+E_COND_PER_READ(EU, R6, ARM2SMARTDMA)   // 0x001022F8
 E_COND_LDR(EU, R0, R6, 0)               // 0x001022FC
 E_COND_LDR(EU, R1, R6, 1)               // 0x00102300
 E_COND_LDR(EU, R3, R6, 2)               // 0x00102304
@@ -2413,7 +2413,7 @@ E_COND_GOTO(EU, 0x00102580)             // 0x0010259C
 E_NOP                                   // 0x001025A0
 E_COND_LOAD_SIMM(EU, CFS, 0, 0)         // 0x001025A4
 E_COND_LOAD_SIMM(EU, CFM, 257, 0)       // 0x001025A8
-E_COND_PER_READ(EU, R6, 0x00027040)     // 0x001025AC
+E_COND_PER_READ(EU, R6, ARM2SMARTDMA)   // 0x001025AC
 E_COND_LDR(EU, R0, R6, 0)               // 0x001025B0
 E_COND_LDR(EU, R1, R6, 1)               // 0x001025B4
 E_COND_LDR(EU, R2, R6, 2)               // 0x001025B8
@@ -2549,7 +2549,7 @@ E_COND_GOTO(EU, 0x001027A0)             // 0x001027BC
 E_NOP                                   // 0x001027C0
 E_COND_LOAD_SIMM(EU, CFS, 0, 0)         // 0x001027C4
 E_COND_LOAD_SIMM(EU, CFM, 257, 0)       // 0x001027C8
-E_COND_PER_READ(EU, R6, 0x00027040)     // 0x001027CC
+E_COND_PER_READ(EU, R6, ARM2SMARTDMA)   // 0x001027CC
 E_COND_LDR(EU, R0, R6, 0)               // 0x001027D0
 E_COND_LDR(EU, R1, R6, 1)               // 0x001027D4
 E_COND_LDR(EU, R2, R6, 2)               // 0x001027D8
@@ -2785,7 +2785,7 @@ E_COND_GOTO(EU, 0x00102B50)             // 0x00102B6C
 E_NOP                                   // 0x00102B70
 E_COND_LOAD_SIMM(EU, CFS, 0, 0)         // 0x00102B74
 E_COND_LOAD_SIMM(EU, CFM, 257, 0)       // 0x00102B78
-E_COND_PER_READ(EU, R6, 0x00027040)     // 0x00102B7C
+E_COND_PER_READ(EU, R6, ARM2SMARTDMA)   // 0x00102B7C
 E_COND_LDR(EU, R0, R6, 0)               // 0x00102B80
 E_COND_LDR(EU, R1, R6, 1)               // 0x00102B84
 E_COND_LDR(EU, R2, R6, 2)               // 0x00102B88
@@ -3001,7 +3001,7 @@ E_COND_GOTO(EU, 0x00102EB0)             // 0x00102ECC
 E_NOP                                   // 0x00102ED0
 E_COND_LOAD_SIMM(EU, CFS, 0, 0)         // 0x00102ED4
 E_COND_LOAD_SIMM(EU, CFM, 257, 0)       // 0x00102ED8
-E_COND_PER_READ(EU, R6, 0x00027040)     // 0x00102EDC
+E_COND_PER_READ(EU, R6, ARM2SMARTDMA)   // 0x00102EDC
 E_COND_LDR(EU, R0, R6, 0)               // 0x00102EE0
 E_COND_LDR(EU, R1, R6, 1)               // 0x00102EE4
 E_COND_LDR(EU, SP, R6, 2)               // 0x00102EE8
@@ -3292,7 +3292,7 @@ E_COND_GOTO(EU, 0x0010333C)             // 0x00103358
 E_NOP                                   // 0x0010335C
 E_COND_LOAD_SIMM(EU, CFS, 0, 0)         // 0x00103360
 E_COND_LOAD_SIMM(EU, CFM, 257, 0)       // 0x00103364
-E_COND_PER_READ(EU, R6, 0x00027040)     // 0x00103368
+E_COND_PER_READ(EU, R6, ARM2SMARTDMA)   // 0x00103368
 E_COND_LDR(EU, R0, R6, 0)               // 0x0010336C
 E_COND_LDR(EU, R1, R6, 1)               // 0x00103370
 E_COND_LDR(EU, R2, R6, 2)               // 0x00103374

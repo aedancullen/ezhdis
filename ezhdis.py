@@ -61,6 +61,13 @@ else:
     ENABLE_APITABLE = False
     print("Not using API table")
 
+if "-r" in sys.argv:
+    ezh_isa.ENABLE_SMARTDMA_REGS = True
+    print("Using named SmartDMA control registers")
+else:
+    ezh_isa.ENABLE_SMARTDMA_REGS = False
+    print("Not using named SmartDMA control registers")
+
 print()
 
 base_file = sys.argv[-1]
