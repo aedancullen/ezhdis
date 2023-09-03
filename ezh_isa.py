@@ -489,25 +489,25 @@ INST = [
 
 def build_tla1(tla, op):
     return [
-        (f"E_COND_{tla}_IMM", OPMASK + (1 << 9) + (1 << 18) + (1 << 19) + (1 << 29) + (1 << 30) + (1 << 31),
+        (f"E_COND_{tla}_IMM", OPMASK + (1 << 9) + (1 << 18) + (1 << 19),
         op + (1 << 18), [
             lambda x: COND[(x >> 5) & 0xF],
             lambda x: REG[(x >> 10) & 0xF],
             lambda x: signed((x >> 20) & 0xFFF, 12),
         ]),
-        (f"E_COND_{tla}_IMMS", OPMASK + (1 << 9) + (1 << 18) + (1 << 19) + (1 << 29) + (1 << 30) + (1 << 31),
+        (f"E_COND_{tla}_IMMS", OPMASK + (1 << 9) + (1 << 18) + (1 << 19),
         op + (1 << 9) + (1 << 18), [
             lambda x: COND[(x >> 5) & 0xF],
             lambda x: REG[(x >> 10) & 0xF],
             lambda x: signed((x >> 20) & 0xFFF, 12),
         ]),
-        (f"E_COND_{tla}N_IMM", OPMASK + (1 << 9) + (1 << 18) + (1 << 19) + (1 << 29) + (1 << 30) + (1 << 31),
+        (f"E_COND_{tla}N_IMM", OPMASK + (1 << 9) + (1 << 18) + (1 << 19),
         op + (1 << 18) + (1 << 19), [
             lambda x: COND[(x >> 5) & 0xF],
             lambda x: REG[(x >> 10) & 0xF],
             lambda x: signed((x >> 20) & 0xFFF, 12),
         ]),
-        (f"E_COND_{tla}N_IMMS", OPMASK + (1 << 9) + (1 << 18) + (1 << 19) + (1 << 29) + (1 << 30) + (1 << 31),
+        (f"E_COND_{tla}N_IMMS", OPMASK + (1 << 9) + (1 << 18) + (1 << 19),
         op + (1 << 9) + (1 << 18) + (1 << 19), [
             lambda x: COND[(x >> 5) & 0xF],
             lambda x: REG[(x >> 10) & 0xF],

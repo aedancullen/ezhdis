@@ -7,6 +7,8 @@
 import sys
 import ezh_isa
 
+LOAD_ADDR = 0x00100000
+print("Assuming load address", "0x%08X" % LOAD_ADDR)
 print(len(ezh_isa.INST), "known instruction mnemonics")
 
 def dis_word(fh, x, addr):
@@ -21,22 +23,30 @@ def dis_word(fh, x, addr):
                 sys.exit(1)
             sel_mnemonic = mnemonic
             sel_fields = fields
+    width = 0
     if sel_mnemonic == None:
-        fh.write("E_NOP\t\t\t\t\t\t\t\t\t\t// Unknown instruction\n")
-        print("Unknown instruction", "0x%08X" % x, "at offset", "0x%08X" % addr)
+        fh.write("E_NOP")
+        width += len("E_NOP")
+        fh.write(" " * (40 - width) + "// " + "Unknown instruction" + "\n")
+        print("Unknown instruction", "0x%08X" % x, "at address", "0x%08X" % addr)
     else:
         fh.write(sel_mnemonic)
-        if sel_fields == []:
-            fh.write("\n")
-            return
-        fh.write("(")
-        i = 0
-        for field_decoder in sel_fields:
-            if i != 0:
-                fh.write(", ")
-            fh.write(str(field_decoder(x)))
-            i += 1
-        fh.write(")\n")
+        width += len(sel_mnemonic)
+        if sel_fields != []:
+            fh.write("(")
+            width += 1
+            i = 0
+            for field_decoder in sel_fields:
+                if i != 0:
+                    fh.write(", ")
+                    width += 2
+                decoded_str = str(field_decoder(x))
+                fh.write(decoded_str)
+                width += len(decoded_str)
+                i += 1
+            fh.write(")")
+            width += 1
+        fh.write(" " * (40 - width) + "// " + "0x%08X" % addr + "\n")
 
 base_file = sys.argv[-1]
 base_file = base_file if not base_file.endswith(".bin") else base_file.split(".")[0]
@@ -64,7 +74,7 @@ with open(bin_file, "rb") as fh:
         dis_out.write("\n\n")
         dis_out.write('#include "fsl_smartdma_prv.h"\n\n')
         word = fh.read(4)
-        addr = 0
+        addr = LOAD_ADDR
         while word:
             x = int.from_bytes(word, "little")
             dis_word(dis_out, x, addr)
