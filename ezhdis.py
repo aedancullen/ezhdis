@@ -5,12 +5,12 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 import sys
-import ezh_prv
+import ezh_isa
 
 def dis_word(fh, x):
     sel_mnemonic = None
     sel_fields = None
-    for (mnemonic, codemask, code, fields) in ezh_prv.INST:
+    for (mnemonic, codemask, code, fields) in ezh_isa.INST:
         if (x ^ code) & codemask == 0:
             if sel_mnemonic != None:
                 print("prev sel_mnemonic:\t\t", sel_mnemonic)

@@ -1,4 +1,4 @@
-# ISA for NXP's secret "EZH" microprocessor (aka IOH Arch. B, aka SmartDMA)
+# ISA from NXP's secret "EZH" microprocessor (aka IOH Arch. B, aka SmartDMA)
 # Copyright (c) 2023 Aedan Cullen <aedan@aedancullen.com>
 # SPDX-License-Identifier: GPL-3.0-or-later
 
