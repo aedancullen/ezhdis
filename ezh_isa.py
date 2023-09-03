@@ -402,7 +402,54 @@ INST = [
 
 
 
-    # 9, 15, 18, 19 for 0x1C
+    ("E_COND_HOLD", OPMASK + (1 << 9) + (1 << 15) + (1 << 18) + (1 << 19),
+    0x1C + (1 << 15), [
+        lambda x: COND[(x >> 5) & 0xF],
+    ]),
+    ("E_COND_VECTORED_HOLD", OPMASK + (1 << 9) + (1 << 15) + (1 << 18) + (1 << 19),
+    0x1C, [
+        lambda x: COND[(x >> 5) & 0xF],
+        lambda x: REG[(x >> 10) & 0xF], # table TODO check
+    ]),
+    ("E_COND_VECTORED_HOLD_NRA", OPMASK + (1 << 9) + (1 << 15) + (1 << 18) + (1 << 19),
+    0x1C + (1 << 18), [
+        lambda x: COND[(x >> 5) & 0xF],
+        lambda x: REG[(x >> 10) & 0xF], # table TODO check
+    ]),
+    ("E_COND_VECTORED_HOLD_LV", OPMASK + (1 << 9) + (1 << 15) + (1 << 18) + (1 << 19),
+    0x1C + (1 << 19), [
+        lambda x: COND[(x >> 5) & 0xF],
+        lambda x: REG[(x >> 10) & 0xF], # table TODO check
+    ]),
+    ("E_COND_VECTORED_HOLD_LV_NRA", OPMASK + (1 << 9) + (1 << 15) + (1 << 18) + (1 << 19),
+    0x1C + (1 << 18) + (1 << 19), [
+        lambda x: COND[(x >> 5) & 0xF],
+        lambda x: REG[(x >> 10) & 0xF], # table TODO check
+    ]),
+    ("E_COND_ACC_VECTORED_HOLD", OPMASK + (1 << 9) + (1 << 15) + (1 << 18) + (1 << 19),
+    0x1C + (1 << 9), [
+        lambda x: COND[(x >> 5) & 0xF],
+        lambda x: REG[(x >> 10) & 0xF], # table TODO check
+        lambda x: REG[(x >> 24) & 0xF], # vectors TODO check
+    ]),
+    ("E_COND_ACC_VECTORED_HOLD_NRA", OPMASK + (1 << 9) + (1 << 15) + (1 << 18) + (1 << 19),
+    0x1C + (1 << 9) + (1 << 18), [
+        lambda x: COND[(x >> 5) & 0xF],
+        lambda x: REG[(x >> 10) & 0xF], # table TODO check
+        lambda x: REG[(x >> 24) & 0xF], # vectors TODO check
+    ]),
+    ("E_COND_ACC_VECTORED_HOLD_LV", OPMASK + (1 << 9) + (1 << 15) + (1 << 18) + (1 << 19),
+    0x1C + (1 << 9) + (1 << 19), [
+        lambda x: COND[(x >> 5) & 0xF],
+        lambda x: REG[(x >> 10) & 0xF], # table TODO check
+        lambda x: REG[(x >> 24) & 0xF], # vectors TODO check
+    ]),
+    ("E_COND_ACC_VECTORED_HOLD_LV_NRA", OPMASK + (1 << 9) + (1 << 15) + (1 << 18) + (1 << 19),
+    0x1C + (1 << 9) + (1 << 18) + (1 << 19), [
+        lambda x: COND[(x >> 5) & 0xF],
+        lambda x: REG[(x >> 10) & 0xF], # table TODO check
+        lambda x: REG[(x >> 24) & 0xF], # vectors TODO check
+    ]),
 
 
 

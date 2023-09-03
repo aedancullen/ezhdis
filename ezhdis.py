@@ -9,7 +9,7 @@ import ezh_isa
 
 print(len(ezh_isa.INST), "known instruction mnemonics")
 
-def dis_word(fh, x):
+def dis_word(fh, x, addr):
     sel_mnemonic = None
     sel_fields = None
     for (mnemonic, codemask, code, fields) in ezh_isa.INST:
@@ -17,12 +17,13 @@ def dis_word(fh, x):
             if sel_mnemonic != None:
                 print("prev sel_mnemonic:\t\t", sel_mnemonic)
                 print("new sel_mnemonic:\t\t", mnemonic)
-                print("duplicate mnemonic match; exiting")
+                print("Duplicate mnemonic match; exiting")
                 sys.exit(1)
             sel_mnemonic = mnemonic
             sel_fields = fields
     if sel_mnemonic == None:
         fh.write("E_NOP\t\t\t\t\t\t\t\t\t\t// Unknown instruction\n")
+        print("Unknown instruction", "0x%08X" % x, "at offset", "0x%08X" % addr)
     else:
         fh.write(sel_mnemonic)
         if sel_fields == []:
@@ -63,8 +64,11 @@ with open(bin_file, "rb") as fh:
         dis_out.write("\n\n")
         dis_out.write('#include "fsl_smartdma_prv.h"\n\n')
         word = fh.read(4)
+        addr = 0
         while word:
             x = int.from_bytes(word, "little")
-            dis_word(dis_out, x)
+            dis_word(dis_out, x, addr)
             word = fh.read(4)
+            addr += 4
+
 print("Wrote disassembly", disas_file)
