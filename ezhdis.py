@@ -7,10 +7,6 @@
 import sys
 import ezh_isa
 
-LOAD_ADDR = 0x00100000
-print("Assuming load address", "0x%08X" % LOAD_ADDR)
-print(len(ezh_isa.INST), "known instruction mnemonics")
-
 def dis_word(fh, x, addr):
     sel_mnemonic = None
     sel_fields = None
@@ -48,11 +44,30 @@ def dis_word(fh, x, addr):
             width += 1
         fh.write(" " * (40 - width) + "// " + "0x%08X" % addr + "\n")
 
+print(len(ezh_isa.INST), "known instruction mnemonics")
+
+if "-l" in sys.argv:
+    LOAD_ADDR = int(sys.argv[sys.argv.index("-l") + 1], 0)
+else:
+    LOAD_ADDR = 0x00100000
+
+print("Assuming load address", "0x%08X" % LOAD_ADDR)
+
+if "-a" in sys.argv:
+    ENABLE_APITABLE = True
+    NUM_APIS = sys.argv[sys.argv.index("-a") + 1]
+    print("Using API table with", NUM_APIS, "entries")
+else:
+    ENABLE_APITABLE = False
+    print("Not using API table")
+
+print()
+
 base_file = sys.argv[-1]
 base_file = base_file if not base_file.endswith(".bin") else base_file.split(".")[0]
 bin_file = base_file + ".bin"
 
-if sys.argv[1] == "-p":
+if "-p" in sys.argv:
     with open(base_file, "r") as fh:
         res = fh.read()
     res = res.replace("{", "[")
@@ -73,8 +88,14 @@ with open(bin_file, "rb") as fh:
         dis_out.write(bin_file)
         dis_out.write("\n\n")
         dis_out.write('#include "fsl_smartdma_prv.h"\n\n')
-        word = fh.read(4)
         addr = LOAD_ADDR
+        if ENABLE_APITABLE:
+            for i in range(21):
+                word = fh.read(4)
+                addr += 4
+                x = int.from_bytes(word, "little")
+                dis_out.write("// API " + str(i) + ": " + "0x%08X" % (x & 0x00FFFFFF) + "\n")
+        word = fh.read(4)
         while word:
             x = int.from_bytes(word, "little")
             dis_word(dis_out, x, addr)
