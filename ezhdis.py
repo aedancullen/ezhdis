@@ -7,6 +7,8 @@
 import sys
 import ezh_isa
 
+print(len(ezh_isa.INST), "known instruction mnemonics")
+
 def dis_word(fh, x):
     sel_mnemonic = None
     sel_fields = None
