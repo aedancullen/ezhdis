@@ -23,7 +23,7 @@ def dis_word(fh, x, addr):
     if sel_mnemonic == None:
         fh.write("E_NOP")
         width += len("E_NOP")
-        fh.write(" " * (40 - width) + "// " + "Unknown instruction" + "\n")
+        fh.write(" " * (48 - width) + "// " + "Unknown instruction" + "\n")
         print("Unknown instruction", "0x%08X" % x, "at address", "0x%08X" % addr)
     else:
         fh.write(sel_mnemonic)
@@ -42,7 +42,7 @@ def dis_word(fh, x, addr):
                 i += 1
             fh.write(")")
             width += 1
-        fh.write(" " * (40 - width) + "// " + "0x%08X" % addr + "\n")
+        fh.write(" " * (48 - width) + "// " + "0x%08X" % addr + "\n")
 
 print(len(ezh_isa.INST), "known instruction mnemonics")
 
@@ -55,18 +55,18 @@ print("Assuming load address", "0x%08X" % LOAD_ADDR)
 
 if "-a" in sys.argv:
     ENABLE_APITABLE = True
-    NUM_APIS = sys.argv[sys.argv.index("-a") + 1]
+    NUM_APIS = int(sys.argv[sys.argv.index("-a") + 1])
     print("Using API table with", NUM_APIS, "entries")
 else:
     ENABLE_APITABLE = False
     print("Not using API table")
 
 if "-r" in sys.argv:
-    ezh_isa.ENABLE_SMARTDMA_REGS = True
-    print("Using named SmartDMA control registers")
+    ezh_isa.ENABLE_REPLACE_REGS = True
+    print("Using named peripheral registers")
 else:
-    ezh_isa.ENABLE_SMARTDMA_REGS = False
-    print("Not using named SmartDMA control registers")
+    ezh_isa.ENABLE_REPLACE_REGS = False
+    print("Not using named peripheral registers")
 
 print()
 
@@ -95,13 +95,17 @@ with open(bin_file, "rb") as fh:
         dis_out.write(bin_file)
         dis_out.write("\n\n")
         dis_out.write('#include "fsl_smartdma_prv.h"\n\n')
+        if ezh_isa.ENABLE_REPLACE_REGS:
+            for (address, name) in ezh_isa.REPLACE_REGS.items():
+                dis_out.write("#define " + name + " " + "0x%08X" % address + "\n")
+            dis_out.write("\n")
         addr = LOAD_ADDR
         if ENABLE_APITABLE:
-            for i in range(21):
+            for i in range(NUM_APIS):
                 word = fh.read(4)
                 addr += 4
                 x = int.from_bytes(word, "little")
-                dis_out.write("// API " + str(i) + ": " + "0x%08X" % (x & 0x00FFFFFF) + "\n")
+                dis_out.write("DCD " + "0x%08X" % (x & 0x00FFFFFF) + " // API " + str(i) + "\n")
         word = fh.read(4)
         while word:
             x = int.from_bytes(word, "little")
