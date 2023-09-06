@@ -2,85 +2,85 @@
 
 #include "fsl_smartdma_prv.h"
 
-E_COND_MVN(NE, PC, R2)                  // 0x00100000
-E_NOP                                   // 0x00100004
-E_NOP                                   // 0x00100008
-E_COND_ADD_IMM(EU, PC, 8)               // 0x0010000C
-E_COND_MOV(EU, R2, R0)                  // 0x00100010
-E_GOSUB(0xDB6D8900)                     // 0x00100014
-E_COND_MOV(EU, R0, R4)                  // 0x00100018
-E_COND_LDR(EU, SP, PC, -3)              // 0x0010001C
-E_COND_LDR(EU, CFS, PC, -6)             // 0x00100020
-E_COND_LDR(EU, CFM, PC, -6)             // 0x00100024
-E_COND_LOAD_SIMM(EU, R0, 32, 24)        // 0x00100028
-E_COND_LOAD_SIMM(EU, R1, 1, 16)         // 0x0010002C
-E_COND_OR_LSL(EU, R0, R0, R1, 0)        // 0x00100030
-E_COND_LOAD_SIMM(EU, R1, 0, 8)          // 0x00100034
-E_COND_OR_LSL(EU, R0, R0, R1, 0)        // 0x00100038
-E_COND_LOAD_SIMM(EU, R1, 0, 0)          // 0x0010003C
-E_COND_OR_LSL(EU, R3, R0, R1, 0)        // 0x00100040
-E_COND_LOAD_SIMM(EU, R0, 0, 0)          // 0x00100044
-E_COND_LOAD_SIMM(EU, R1, 0, 0)          // 0x00100048
-E_COND_LOAD_SIMM(EU, R4, 0, 0)          // 0x0010004C
-E_COND_BCLR_IMM(EU, GPD, GPD, 0)        // 0x00100050
-E_COND_BCLR_IMM(EU, GPD, GPD, 1)        // 0x00100054
-E_COND_BCLR_IMM(EU, GPD, GPD, 2)        // 0x00100058
-E_COND_BCLR_IMM(EU, GPD, GPD, 3)        // 0x0010005C
-E_COND_BCLR_IMM(EU, GPD, GPD, 4)        // 0x00100060
-E_COND_BCLR_IMM(EU, GPD, GPD, 5)        // 0x00100064
-E_COND_BCLR_IMM(EU, GPD, GPD, 6)        // 0x00100068
-E_COND_BCLR_IMM(EU, GPD, GPD, 7)        // 0x0010006C
-E_COND_BSET_IMM(EU, GPD, GPD, 18)       // 0x00100070
-E_COND_ADD_IMM(EU, R7, -4)              // 0x00100074
-E_COND_PER_READ(AZ, R0, 0x00000010)     // 0x00100078
-E_NOP                                   // Unknown instruction
-E_COND_MOV(SPO, R0, R4)                 // 0x00100080
-E_COND_OR_LSL(SPO, R0, R4, R0, 0)       // 0x00100084
-E_COND_VECTORED_HOLD(EU, PC)            // 0x00100088
-E_NOP                                   // 0x0010008C
-E_NOP                                   // 0x00100090
-E_COND_LDR(EU, PC, R7, 1)               // 0x00100094
-E_COND_LDR(EU, PC, R7, 2)               // 0x00100098
-E_NOP                                   // 0x0010009C
-E_NOP                                   // 0x001000A0
-E_NOP                                   // 0x001000A4
-E_NOP                                   // 0x001000A8
-E_NOP                                   // 0x001000AC
-E_COND_LDR(EU, PC, R7, 3)               // 0x001000B0
-E_COND_LDR(EU, PC, R7, 0)               // 0x001000B4
-E_COND_BSET_IMM(EU, CFM, CFM, 0)        // 0x001000B8
-E_COND_BTOG_IMM(EU, GPO, GPO, 18)       // 0x001000BC
-E_COND_LOAD_SIMM(EU, R0, 32, 24)        // 0x001000C0
-E_COND_LOAD_SIMM(EU, R1, 1, 16)         // 0x001000C4
-E_COND_OR_LSL(EU, R0, R0, R1, 0)        // 0x001000C8
-E_COND_LOAD_SIMM(EU, R1, 0, 8)          // 0x001000CC
-E_COND_OR_LSL(EU, R0, R0, R1, 0)        // 0x001000D0
-E_COND_LOAD_SIMM(EU, R1, 0, 0)          // 0x001000D4
-E_COND_OR_LSL(EU, R3, R0, R1, 0)        // 0x001000D8
-E_COND_LDR(EU, R1, R3, 0)               // 0x001000DC
-E_COND_LOAD_SIMM(EU, R0, 75, 9)         // 0x001000E0
-E_COND_ADD_IMM(EU, R1, 20)              // 0x001000E4
-E_COND_TIGHT_LOOP(EU, R1, R0)           // 0x001000E8
-E_NOP                                   // 0x001000EC
-E_COND_FEND_LSR(EU, R0, R1, 0)          // 0x001000F0
-E_COND_LDR(EU, R1, R3, 0)               // 0x001000F4
-E_COND_ROR(EU, R4, R0, 16)              // 0x001000F8
-E_COND_STR_POST(EU, R3, R4, 1)          // 0x001000FC
-E_COND_LOAD_SIMM(EU, R0, 32, 24)        // 0x00100100
-E_COND_LOAD_SIMM(EU, R1, 1, 16)         // 0x00100104
-E_COND_OR_LSL(EU, R0, R0, R1, 0)        // 0x00100108
-E_COND_LOAD_SIMM(EU, R1, 0, 8)          // 0x0010010C
-E_COND_OR_LSL(EU, R0, R0, R1, 0)        // 0x00100110
-E_COND_LOAD_SIMM(EU, R1, 0, 0)          // 0x00100114
-E_COND_OR_LSL(EU, R3, R0, R1, 0)        // 0x00100118
-E_COND_PER_WRITE(EU, R0, 0x0001D044)    // 0x0010011C
-E_COND_LDR(EU, PC, R7, 0)               // 0x00100120
-E_COND_BSET_IMM(EU, CFM, CFM, 1)        // 0x00100124
-E_COND_STRB_POST(EU, R3, GPI, 1)        // 0x00100128
-E_GOSUB(0x000100A0)                     // 0x0010012C
-E_COND_LDR(EU, PC, R7, 0)               // 0x00100130
-E_NOP                                   // 0x00100134
-E_COND_SUB_IMM(EU, PC, 8)               // 0x00100138
-E_COND_LOAD_SIMMS(NC, RA, -917, 22)     // 0x0010013C
-E_NOP                                   // Unknown instruction
-E_COND_LSLS(SNE, R1, R0, 0)             // 0x00100144
+E_COND_MVN(NE, PC, R2)                          // 0x0001001C
+E_NOP                                           // 0x00010020
+E_NOP                                           // 0x00010024
+E_COND_ADD_IMM(EU, PC, PC, 8)                   // 0x00010028
+E_COND_MOV(EU, R2, R0)                          // 0x0001002C
+E_GOSUB(0xDB6D8900)                             // 0x00010030
+E_COND_MOV(EU, R0, R4)                          // 0x00010034
+E_COND_LDR(EU, SP, PC, -3)                      // 0x00010038
+E_COND_LDR(EU, CFS, PC, -6)                     // 0x0001003C
+E_COND_LDR(EU, CFM, PC, -6)                     // 0x00010040
+E_COND_LOAD_SIMM(EU, R0, 32, 24)                // 0x00010044
+E_COND_LOAD_SIMM(EU, R1, 1, 16)                 // 0x00010048
+E_COND_OR_LSL(EU, R0, R0, R1, 0)                // 0x0001004C
+E_COND_LOAD_SIMM(EU, R1, 0, 8)                  // 0x00010050
+E_COND_OR_LSL(EU, R0, R0, R1, 0)                // 0x00010054
+E_COND_LOAD_SIMM(EU, R1, 0, 0)                  // 0x00010058
+E_COND_OR_LSL(EU, R3, R0, R1, 0)                // 0x0001005C
+E_COND_LOAD_SIMM(EU, R0, 0, 0)                  // 0x00010060
+E_COND_LOAD_SIMM(EU, R1, 0, 0)                  // 0x00010064
+E_COND_LOAD_SIMM(EU, R4, 0, 0)                  // 0x00010068
+E_COND_BCLR_IMM(EU, GPD, GPD, 0)                // 0x0001006C
+E_COND_BCLR_IMM(EU, GPD, GPD, 1)                // 0x00010070
+E_COND_BCLR_IMM(EU, GPD, GPD, 2)                // 0x00010074
+E_COND_BCLR_IMM(EU, GPD, GPD, 3)                // 0x00010078
+E_COND_BCLR_IMM(EU, GPD, GPD, 4)                // 0x0001007C
+E_COND_BCLR_IMM(EU, GPD, GPD, 5)                // 0x00010080
+E_COND_BCLR_IMM(EU, GPD, GPD, 6)                // 0x00010084
+E_COND_BCLR_IMM(EU, GPD, GPD, 7)                // 0x00010088
+E_COND_BSET_IMM(EU, GPD, GPD, 18)               // 0x0001008C
+E_COND_ADD_IMM(EU, R7, PC, -4)                  // 0x00010090
+E_COND_PER_READ(AZ, R0, 0x00000010)             // 0x00010094
+E_NOP                                           // Unknown instruction
+E_COND_MOV(SPO, R0, R4)                         // 0x0001009C
+E_COND_OR_LSL(SPO, R0, R4, R0, 0)               // 0x000100A0
+E_COND_VECTORED_HOLD(EU, PC)                    // 0x000100A4
+E_NOP                                           // 0x000100A8
+E_NOP                                           // 0x000100AC
+E_COND_LDR(EU, PC, R7, 1)                       // 0x000100B0
+E_COND_LDR(EU, PC, R7, 2)                       // 0x000100B4
+E_NOP                                           // 0x000100B8
+E_NOP                                           // 0x000100BC
+E_NOP                                           // 0x000100C0
+E_NOP                                           // 0x000100C4
+E_NOP                                           // 0x000100C8
+E_COND_LDR(EU, PC, R7, 3)                       // 0x000100CC
+E_COND_LDR(EU, PC, R7, 0)                       // 0x000100D0
+E_COND_BSET_IMM(EU, CFM, CFM, 0)                // 0x000100D4
+E_COND_BTOG_IMM(EU, GPO, GPO, 18)               // 0x000100D8
+E_COND_LOAD_SIMM(EU, R0, 32, 24)                // 0x000100DC
+E_COND_LOAD_SIMM(EU, R1, 1, 16)                 // 0x000100E0
+E_COND_OR_LSL(EU, R0, R0, R1, 0)                // 0x000100E4
+E_COND_LOAD_SIMM(EU, R1, 0, 8)                  // 0x000100E8
+E_COND_OR_LSL(EU, R0, R0, R1, 0)                // 0x000100EC
+E_COND_LOAD_SIMM(EU, R1, 0, 0)                  // 0x000100F0
+E_COND_OR_LSL(EU, R3, R0, R1, 0)                // 0x000100F4
+E_COND_LDR(EU, R1, R3, 0)                       // 0x000100F8
+E_COND_LOAD_SIMM(EU, R0, 75, 9)                 // 0x000100FC
+E_COND_ADD_IMM(EU, R1, PC, 20)                  // 0x00010100
+E_COND_TIGHT_LOOP(EU, R1, R0)                   // 0x00010104
+E_NOP                                           // 0x00010108
+E_COND_FEND_LSR(EU, R0, R1, 0)                  // 0x0001010C
+E_COND_LDR(EU, R1, R3, 0)                       // 0x00010110
+E_COND_ROR(EU, R4, R0, 16)                      // 0x00010114
+E_COND_STR_POST(EU, R3, R4, 1)                  // 0x00010118
+E_COND_LOAD_SIMM(EU, R0, 32, 24)                // 0x0001011C
+E_COND_LOAD_SIMM(EU, R1, 1, 16)                 // 0x00010120
+E_COND_OR_LSL(EU, R0, R0, R1, 0)                // 0x00010124
+E_COND_LOAD_SIMM(EU, R1, 0, 8)                  // 0x00010128
+E_COND_OR_LSL(EU, R0, R0, R1, 0)                // 0x0001012C
+E_COND_LOAD_SIMM(EU, R1, 0, 0)                  // 0x00010130
+E_COND_OR_LSL(EU, R3, R0, R1, 0)                // 0x00010134
+E_COND_PER_WRITE(EU, R0, 0x0001D044)            // 0x00010138
+E_COND_LDR(EU, PC, R7, 0)                       // 0x0001013C
+E_COND_BSET_IMM(EU, CFM, CFM, 1)                // 0x00010140
+E_COND_STRB_POST(EU, R3, GPI, 1)                // 0x00010144
+E_GOSUB(0x000100A0)                             // 0x00010148
+E_COND_LDR(EU, PC, R7, 0)                       // 0x0001014C
+E_NOP                                           // 0x00010150
+E_COND_SUB_IMM(EU, PC, PC, 8)                   // 0x00010154
+E_COND_LOAD_SIMMS(NC, RA, -917, 22)             // 0x00010158
+E_NOP                                           // Unknown instruction
+E_COND_LSLS(SNE, R1, R0, 0)                     // 0x00010160
