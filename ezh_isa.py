@@ -7,28 +7,16 @@
 # 0x19 (register-specified shift)
 # 0x1D (load/store with register-specified offset)
 
+from peripheral_regs import PERIPH_REGS_RT5XX as PERIPH_REGS
+
 def signed(value, bits):
     sign_bit = 1 << (bits - 1)
     return (value & (sign_bit - 1)) - (value & sign_bit)
 
 def addr(x):
-    if ENABLE_REPLACE_REGS:
-        return REPLACE_REGS[x] if x in REPLACE_REGS else "0x%08X" % x
+    if ENABLE_PERIPH_REGS:
+        return PERIPH_REGS[x] if x in PERIPH_REGS else "0x%08X" % x
     return "0x%08X" % x
-
-REPLACE_REGS = {
-    0x00027020: "SMARTDMA_BOOT",
-    0x00027024: "SMARTDMA_CTRL",
-    0x00027028: "SMARTDMA_PC",
-    0x0002702C: "SMARTDMA_SP",
-    0x00027030: "SMARTDMA_BREAK_ADDR",
-    0x00027034: "SMARTDMA_BREAK_VECT",
-    0x00027038: "SMARTDMA_EMER_VECT",
-    0x0002703C: "SMARTDMA_EMER_SEL",
-    0x00027040: "SMARTDMA_ARM2SMARTDMA",
-    0x00027044: "SMARTDMA_SMARTDMA2ARM",
-    0x00027048: "SMARTDMA_PENDTRAP",
-}
 
 OPMASK = 0x1F
 

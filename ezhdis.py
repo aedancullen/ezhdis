@@ -62,10 +62,10 @@ else:
     print("Not using API table")
 
 if "-r" in sys.argv:
-    ezh_isa.ENABLE_REPLACE_REGS = True
+    ezh_isa.ENABLE_PERIPH_REGS = True
     print("Using named peripheral registers")
 else:
-    ezh_isa.ENABLE_REPLACE_REGS = False
+    ezh_isa.ENABLE_PERIPH_REGS = False
     print("Not using named peripheral registers")
 
 print()
@@ -95,8 +95,8 @@ with open(bin_file, "rb") as fh:
         dis_out.write(bin_file)
         dis_out.write("\n\n")
         dis_out.write('#include "fsl_smartdma_prv.h"\n\n')
-        if ezh_isa.ENABLE_REPLACE_REGS:
-            for (address, name) in ezh_isa.REPLACE_REGS.items():
+        if ezh_isa.ENABLE_PERIPH_REGS:
+            for (address, name) in ezh_isa.PERIPH_REGS.items():
                 dis_out.write("#define " + name + " " + "0x%08X" % address + "\n")
             dis_out.write("\n")
         addr = LOAD_ADDR
